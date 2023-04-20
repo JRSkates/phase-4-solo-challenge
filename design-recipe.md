@@ -19,33 +19,65 @@ I would like to see an itemised receipt with a grand total.
 _The diagram below uses asciiflow.com but you could also use excalidraw.com, draw.io, or miro.com_
 
 ```
-┌────────────────────────────┐
-│ MusicPlayer                │
-│                            │
-│ - add(track)               │
-│ - all                      │
-│ - search_by_title(keyword) │
-│   => [tracks...]           │
-└───────────┬────────────────┘
-            │
-            │ owns a list of
-            ▼
-┌─────────────────────────┐
-│ Track(title, artist)    │
-│                         │
-│ - title                 │
-│ - artist                │
-│ - format                │
-│   => "TITLE by ARTIST"  │
-└─────────────────────────┘
+
 ```
 
 _Class Structure Design:_
 
 ```ruby
-class Takeaway #our main class
-    def initialize()
+class Order #our main class
+  def initialize()
+    @order = {}
+  end
 
+  def show_menu
+    menu = Menu.new
+    return menu.show
+  end
+
+  def show_basket
+    fail "Your basket is empty" if @order.empty?
+    return @order
+  end
+
+  def add_to_order(dish)
+
+  end
+
+  def order_food
+
+  end
+end
+
+class Menu
+  def initialize
+    @menu = {food: price}
+  end
+
+  def show
+    @menu.each do |food, price| 
+      puts "#{food}: £#{price}"
+    end
+  end
+
+  def search_for_dish(dish)
+
+  end
+end
+
+class Dishes
+  def initialize(dish, price)
+    @dish = dish
+    @price = price
+  end
+
+  def add_to_menu
+
+  end
+
+  def remove_from_menu
+
+  end
 end
 
 ```
