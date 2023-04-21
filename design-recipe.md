@@ -40,19 +40,14 @@ _Class Structure Design:_
 
 class Order #our main class
   def initialize(io = Kernel)
-    @order = {}
-    @view_menu = Menu.new
+    @order = []
     @io = io
-  end
-
-  def show_menu
-    return @view_menu.show
   end
 
   def show_basket
     fail "Your basket is empty" if @order.empty?
-    return @order.each do |food, price| 
-      puts "#{food}: £#{price}"
+    return @order.each do |item| 
+      puts "#{item}"
     end
   end
 
@@ -60,8 +55,8 @@ class Order #our main class
     return @view_menu.search_for_dish(search)
   end
 
-  def add_to_order(:dish)  
-    @order[:dish] = @view_menu[:dish]
+  def add_to_order(dish)  
+    @order << dish
     return @order
   end
 
