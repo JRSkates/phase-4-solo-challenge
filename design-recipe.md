@@ -60,10 +60,14 @@ class Order #our main class
     return @order
   end
 
-  def order_food
+  def checkout_order
     @io.puts "Here is your final order: "
     @io.puts "#{@order.show_basket}"
-    @io.puts "TBC"
+    @io.puts "To order enter Y, to cancel hit N"
+    input = @io.gets.chomp
+    if input == "N"
+      @io.puts "Cancelling checkout"
+    end
   end
 end
 

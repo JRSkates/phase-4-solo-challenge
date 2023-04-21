@@ -12,8 +12,11 @@ class Menu
   end
     
   def show
-    @menu.each do |dish|
-      puts dish
-    end
+    new_menu = @menu.join(', ').tr(",", "\n")
+    return "#{new_menu}"
+    # @menu.each do |dish|
+    #   puts dish
+    # end
   end
 end
+
