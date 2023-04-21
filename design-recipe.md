@@ -68,7 +68,7 @@ class Order #our main class
   def order_food
     @io.puts "Here is your final order: "
     @io.puts "#{@order.show_basket}"
-    @io.puts "
+    @io.puts "TBC"
   end
 end
 
@@ -83,7 +83,7 @@ class Menu
 
   def show
     @menu.each do |food, price| 
-      puts "#{food}: £#{price}"
+      puts '#{food}: £#{price}'
     end
   end
 
