@@ -14,6 +14,12 @@ As a customer
 So that I can verify that my order is correct
 I would like to see an itemised receipt with a grand total.
 
+Use the twilio-ruby gem to implement this next one. You will need to use doubles too.
+
+As a customer
+So that I am reassured that my order will be delivered on time
+I would like to receive a text such as "Thank you! Your order was placed and will be delivered before 18:52" after I have ordered.
+
 ## 2. Design the Class System
 
 _The diagram below uses asciiflow.com but you could also use excalidraw.com, draw.io, or miro.com_
@@ -25,33 +31,54 @@ _The diagram below uses asciiflow.com but you could also use excalidraw.com, dra
 _Class Structure Design:_
 
 ```ruby
+
+@DEFAULT_MENU = {
+  pasta: 8.99,
+  pizza: 9.99,
+  garlic_bread: 4.99
+}
+
 class Order #our main class
-  def initialize()
+  def initialize(io = Kernel)
     @order = {}
+    @view_menu = Menu.new
+    @io = io
   end
 
   def show_menu
-    menu = Menu.new
-    return menu.show
+    return @view_menu.show
   end
 
   def show_basket
     fail "Your basket is empty" if @order.empty?
+    return @order.each do |food, price| 
+      puts "#{food}: £#{price}"
+    end
+  end
+
+  def search_menu(search)
+    return @view_menu.search_for_dish(search)
+  end
+
+  def add_to_order(:dish)  
+    @order[:dish] = @view_menu[:dish]
     return @order
   end
 
-  def add_to_order(dish)
-
-  end
-
   def order_food
-
+    @io.puts "Here is your final order: "
+    @io.puts "#{@order.show_basket}"
+    @io.puts "
   end
 end
 
 class Menu
-  def initialize
-    @menu = {food: price}
+  def initialize(@menu)
+    @menu = {
+      pasta: 8.99,
+      pizza: 9.99,
+      garlic_bread: 4.99
+    }
   end
 
   def show
@@ -61,7 +88,7 @@ class Menu
   end
 
   def search_for_dish(dish)
-
+    @menu.select { |food| return food if dish == food}
   end
 end
 
@@ -69,14 +96,6 @@ class Dishes
   def initialize(dish, price)
     @dish = dish
     @price = price
-  end
-
-  def add_to_menu
-
-  end
-
-  def remove_from_menu
-
   end
 end
 
@@ -88,15 +107,18 @@ _Create examples of the classes being used together in different situations and
 combinations that reflect the ways in which the system will be used._
 
 ```ruby
-# EXAMPLE
+# 1 - Show menu
+order = Order.new
+order.show_menu # => pasta: £8.99, pizza: £9.99, garlic_bread: £4.99
 
-# Gets all tracks
-library = MusicLibrary.new
-track_1 = Track.new("Carte Blanche", "Veracocha")
-track_2 = Track.new("Synaesthesia", "The Thrillseekers")
-library.add(track_1)
-library.add(track_2)
-library.all # => [track_1, track_2]
+# 2 - Show order list 
+order = Order.new
+order.add_to_order(:pasta)
+order.show_basket # => "pasta: £8.99 - Total: £8.99"
+
+# 3 - Search menu by dish
+order = Order.new
+order.search_menu(pasta) # => "pasta: £8.99"
 ```
 
 ## 4. Create Examples as Unit Tests
@@ -105,11 +127,14 @@ _Create examples, where appropriate, of the behaviour of each relevant class at
 a more granular level of detail._
 
 ```ruby
-# EXAMPLE
+# 1 - Show empty order list
+order = Order.new
+order.show_basket # => fail "Your basket is empty"
 
-# Constructs a track
-track = Track.new("Carte Blanche", "Veracocha")
-track.title # => "Carte Blanche"
+# 2 - Show order list 
+order = Order.new
+order.add_to_order(:pasta)
+order.show_basket # => "pasta: £8.99 - Total: £8.99"
 ```
 
 _Encode each example as a test. You can add to the above list as you go._
